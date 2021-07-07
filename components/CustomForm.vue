@@ -84,6 +84,8 @@ export default {
           )
         })
       }
+
+      this.$emit('form-submit')
     },
     handleReset() {
       Object.keys(this.errors).forEach((field) => this.handleCleanError(field))

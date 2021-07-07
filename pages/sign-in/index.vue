@@ -67,8 +67,7 @@ export default {
   methods: {
     async signIn() {
       try {
-        const { accessToken } = await this.$axios.$post('/signup', {
-          username: this.userData.username.value,
+        const { accessToken } = await this.$axios.$post('/login', {
           email: this.userData.email.value,
           password: this.userData.password.value,
         })
@@ -76,7 +75,6 @@ export default {
         const { sub: id } = JSON.parse(atob(accessToken.split('.')[1]))
 
         this.$store.dispatch('mutateUser', {
-          name: this.userData.username.value,
           email: this.userData.email.value,
           accessToken,
         })
