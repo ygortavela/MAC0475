@@ -1,16 +1,21 @@
 const state = () => ({
-  user: {},
+  user: {
+    name: '',
+    accessToken: '',
+  },
 })
 
 const mutations = {
-  increment(state) {
-    state.counter++
+  MUTATE_USER(state, user) {
+    state.user.name = user.name
+    state.user.accessToken = user.accessToken
   },
 }
 
 const actions = {
-  increment(state) {
-    state.counter++
+  mutateUser({ commit }, payload) {
+    console.log(payload)
+    commit('MUTATE_USER', payload)
   },
 }
 

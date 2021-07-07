@@ -92,7 +92,31 @@ export default {
         return
       }
 
-      console.log('bla')
+      this.signUp()
+    },
+    async signUp() {
+      try {
+        const { accessToken } = await this.$axios.$post('/signup', {
+          username: this.userData.username.value,
+          email: this.userData.email.value,
+          password: this.userData.password.value,
+        })
+
+        const { sub: id } = JSON.parse(atob(accessToken.split('.')[1]))
+
+        this.$store.dispatch('mutateUser', {
+          name: this.userData.username.value,
+          accessToken,
+        })
+
+        this.$router.push({ path: `/users/${id}` })
+      } catch (error) {
+        const { response } = error
+
+        alert(
+          `Please try again, request failed with status ${response.status}: ${response.data}`
+        )
+      }
     },
   },
 }
