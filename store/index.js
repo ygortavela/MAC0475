@@ -1,23 +1,23 @@
 const state = () => ({
-  user: {
-    name: '',
-    email: '',
-    accessToken: '',
-  },
+  accessToken: '',
 })
 
 const mutations = {
-  MUTATE_USER(state, user) {
-    state.user.name = user.name
-    state.user.email = user.email
-    state.user.accessToken = user.accessToken
+  MUTATE_ACCESS_TOKEN(state, accessToken) {
+    state.accessToken = accessToken
   },
 }
 
 const actions = {
-  mutateUser({ commit }, payload) {
-    commit('MUTATE_USER', payload)
+  mutateAccessToken({ commit }, payload) {
+    commit('MUTATE_ACCESS_TOKEN', payload)
   },
 }
 
-export default { state, mutations, actions }
+const getters = {
+  getAccessToken(state) {
+    return state.accessToken
+  },
+}
+
+export default { state, mutations, actions, getters }

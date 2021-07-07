@@ -74,11 +74,7 @@ export default {
 
         const { sub: id } = JSON.parse(atob(accessToken.split('.')[1]))
 
-        this.$store.dispatch('mutateUser', {
-          email: this.userData.email.value,
-          accessToken,
-        })
-
+        this.$store.dispatch('mutateAccessToken', accessToken)
         this.$router.push({ path: `/users/${id}` })
       } catch (error) {
         const { response } = error
