@@ -17,6 +17,12 @@
       "password": "$2a$10$odR0CWLNz9k5epyXNP3fwOuyP30tezQH.bDVaANUE7kFmispDiEAW",
       "username": "monkey d. luffy",
       "id": 3
+    },
+    {
+      "email": "test22@test.com",
+      "password": "$2a$10$RLENPAbh/0NBOY123RcVyeHAoxvM4oH3aV4nA3pOJ67jOfMvepHDq",
+      "username": "test22",
+      "id": 4
     }
   ]
 }

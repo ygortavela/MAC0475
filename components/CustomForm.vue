@@ -83,9 +83,9 @@ export default {
             (error) => `${field} ${validationMessages[error]}`
           )
         })
+      } else {
+        this.$emit('form-submit')
       }
-
-      this.$emit('form-submit')
     },
     handleReset() {
       Object.keys(this.errors).forEach((field) => this.handleCleanError(field))
