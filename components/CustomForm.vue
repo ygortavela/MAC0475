@@ -1,5 +1,5 @@
 <template>
-  <form id="custom-form" @submit="$emit('form-submit', $event)">
+  <form id="custom-form" @submit="handleSubmit($event)">
     <slot></slot>
     <div class="form__button">
       <button
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import validate from '@/utils/validators'
+
 export default {
   props: {
     buttons: {
@@ -40,6 +42,26 @@ export default {
           route: '/sign-in',
         }
       },
+    },
+    validator: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  methods: {
+    handleSubmit(event) {
+      event.preventDefault()
+
+      const inputElements = event.target.elements
+      const inputValues = Object.keys(this.validator).reduce((acc, current) => {
+        acc[current] = inputElements[current].value
+
+        return acc
+      }, {})
+
+      const notValidFields = validate(this.validator, inputValues)
+
+      this.$emit('form-submit', notValidFields)
     },
   },
 }

@@ -28,16 +28,7 @@
 </template>
 
 <script>
-import Navigation from '@/components/Navigation'
-import CustomForm from '@/components/CustomForm'
-import InputField from '@/components/InputField'
-
 export default {
-  components: {
-    Navigation,
-    CustomForm,
-    InputField,
-  },
   data() {
     return {
       userData: {

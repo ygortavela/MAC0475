@@ -1,7 +1,11 @@
 <template>
   <section id="sign-up">
     <navigation />
-    <custom-form :buttons="buttons" @form-submit="handleFormSubmit">
+    <custom-form
+      :buttons="buttons"
+      :validator="userData.dataContract"
+      @form-submit="handleFormSubmit"
+    >
       <input-field
         v-model="userData.username.value"
         name="username"
@@ -13,7 +17,6 @@
         v-model="userData.email.value"
         name="email"
         label="Email"
-        type="email"
         placeholder="test@email.com"
         :errors="userData.email.errors"
         @clean-errors="handleCleanErrors"
@@ -31,16 +34,9 @@
 </template>
 
 <script>
-import Navigation from '@/components/Navigation'
-import CustomForm from '@/components/CustomForm'
-import InputField from '@/components/InputField'
+import validationMessages from '@/constants/validationMessage'
 
 export default {
-  components: {
-    Navigation,
-    CustomForm,
-    InputField,
-  },
   data() {
     return {
       userData: {
@@ -56,6 +52,24 @@ export default {
           value: '',
           errors: [],
         },
+        dataContract: {
+          username: {
+            type: 'username',
+            required: true,
+          },
+          email: {
+            type: 'email',
+            required: true,
+          },
+          password: {
+            type: 'string',
+            required: true,
+            lengthRange: {
+              min: 8,
+              max: 32,
+            },
+          },
+        },
       },
       buttons: [
         { type: 'reset', value: 'Clear', primary: false },
@@ -67,8 +81,18 @@ export default {
     handleCleanErrors(target) {
       this.userData[target].errors = []
     },
-    handleFormSubmit(event) {
-      event.preventDefault()
+    handleFormSubmit(notValidFields) {
+      if (Object.keys(notValidFields).length > 0) {
+        Object.entries(notValidFields).forEach(([field, errorsArray]) => {
+          this.userData[field].errors = errorsArray.map(
+            (error) => `${field} ${validationMessages[error]}`
+          )
+        })
+
+        return
+      }
+
+      console.log('bla')
     },
   },
 }
