@@ -10,7 +10,7 @@
       :placeholder="placeholder"
       :value="value"
       @input="$emit('input', $event.target.value)"
-      @focus="hasError && $emit('clean-errors', $event.target.name)"
+      @focus="hasError && slotProps.cleanError($event.target.name)"
     />
     <p v-for="error in errors" :key="error" class="input__message">
       {{ error }}
@@ -41,14 +41,22 @@ export default {
       type: String,
       default: 'text',
     },
-    errors: {
-      type: Array,
-      default: () => [],
+    slotProps: {
+      type: Object,
+      default: () => {
+        return {
+          errors: {},
+          cleanErrorCallback: () => {},
+        }
+      },
     },
   },
   computed: {
+    errors() {
+      return this.slotProps.errors[this.name]
+    },
     hasError() {
-      return this.errors.length > 0
+      return this.errors?.length > 0
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
-  <form id="custom-form" @submit="handleSubmit($event)">
-    <slot></slot>
+  <form id="custom-form" @submit="handleSubmit" @reset="handleReset">
+    <slot :errors="errors" :clean-error="handleCleanError"></slot>
     <div class="form__button">
       <button
         v-for="button in buttons"
@@ -26,6 +26,7 @@
 
 <script>
 import validate from '@/utils/validators'
+import validationMessages from '@/constants/validationMessage'
 
 export default {
   props: {
@@ -48,6 +49,21 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      errors: {
+        type: Object,
+        default: () => {},
+      },
+    }
+  },
+  mounted() {
+    this.errors = Object.keys(this.validator).reduce((acc, current) => {
+      acc[current] = []
+
+      return acc
+    }, {})
+  },
   methods: {
     handleSubmit(event) {
       event.preventDefault()
@@ -61,7 +77,19 @@ export default {
 
       const notValidFields = validate(this.validator, inputValues)
 
-      this.$emit('form-submit', notValidFields)
+      if (Object.keys(notValidFields).length > 0) {
+        Object.entries(notValidFields).forEach(([field, errorsArray]) => {
+          this.errors[field] = errorsArray.map(
+            (error) => `${field} ${validationMessages[error]}`
+          )
+        })
+      }
+    },
+    handleReset() {
+      Object.keys(this.errors).forEach((field) => this.handleCleanError(field))
+    },
+    handleCleanError(target) {
+      this.errors[target] = []
     },
   },
 }
